@@ -3,12 +3,11 @@ import Header from "../components/layout/Header";
 import ReactPlayer from "react-player";
 import BuyerSignup from "../features/auth/signup/BuyerSignup";
 import SellerSignup from "../features/auth/signup/SellerSignup";
-import LoginPage from "../features/auth/Login";// ✅ Import LoginPage
+import LoginPage from "../features/auth/Login";
 import FeaturedProducts from "../components/product/FeaturedProducts";
 import Categories from "../components/layout/Categories";
 import Footer from "../components/layout/Footer";
-const heroImage =
-  "https://images.unsplash.com/photo-1606908815208-951b2b0f10b1?auto=format&fit=crop&w=1920&q=80";
+import Contact from "../components/layout/Contact";
 
 const Home = () => {
   const [selectedForm, setSelectedForm] = useState(null); // buyer | seller | login
@@ -21,17 +20,7 @@ const Home = () => {
       <Header />
 
       {/* Hero Section */}
-      <div
-        className="flex flex-col md:flex-row flex-1 px-6 md:px-16 py-10 text-white relative"
-        style={{
-          backgroundImage: `url(${heroImage})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        {/* Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent z-0"></div>
-
+      <div className="flex flex-col md:flex-row flex-1 px-6 md:px-16 py-10 text-white relative bg-green-700">
         {/* Left Section */}
         <div className="relative z-10 md:w-1/2 flex flex-col justify-between gap-6 p-6">
           <div className="flex-1 flex flex-col justify-center gap-6">
@@ -93,7 +82,6 @@ const Home = () => {
               >
                 Become a Seller
               </button>
-          
             </div>
           </div>
         </div>
@@ -123,14 +111,15 @@ const Home = () => {
               onLoginClick={() => setSelectedForm("login")}
             />
           )}
-          {selectedForm === "login" && (
-            <LoginPage onClose={handleClose} />
-          )}
+          {selectedForm === "login" && <LoginPage onClose={handleClose} />}
         </div>
       )}
-       <FeaturedProducts />
-       <Categories></Categories>
-       <Footer></Footer>
+
+      {/* Other Components */}
+      <FeaturedProducts />
+      <Categories />
+      <Contact/>
+      <Footer />
     </div>
   );
 };
