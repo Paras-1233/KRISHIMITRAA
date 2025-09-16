@@ -16,25 +16,32 @@ const Contact = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // For now, just show success message
     setSubmitted(true);
     setFormData({ name: "", email: "", message: "" });
-    // You can integrate EmailJS or your backend here
+    // Placeholder for future backend/email integration
   };
 
+  const handleDismiss = () => setSubmitted(false);
+
   return (
-    <section className="py-12 px-6 bg-green-50">
+    <section className="py-16 px-6 bg-green-50">
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-3xl font-bold text-green-700 mb-8 text-center">
+        <h2 className="text-3xl md:text-4xl font-bold text-green-700 mb-4 text-center">
           📬 Contact Us
         </h2>
-        <p className="text-center text-green-800 mb-8">
-          Have questions or feedback? Reach out to us and we'll get back to you promptly.
+        <p className="text-center text-green-800 mb-12">
+          Have questions or feedback? Reach out and we’ll get back to you promptly.
         </p>
 
         {submitted && (
-          <div className="bg-green-200 text-green-800 p-4 mb-6 rounded-lg text-center">
-            Thank you! Your message has been submitted.
+          <div className="relative bg-green-200 text-green-900 p-4 mb-6 rounded-lg text-center flex justify-between items-center">
+            <span>✅ Thank you! Your message has been submitted.</span>
+            <button
+              onClick={handleDismiss}
+              className="text-green-800 hover:text-green-900 font-bold text-lg transition"
+            >
+              &times;
+            </button>
           </div>
         )}
 
@@ -45,7 +52,7 @@ const Contact = () => {
             value={formData.name}
             onChange={handleChange}
             placeholder="Your Name"
-            className="p-3 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="p-4 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400 transition"
             required
           />
           <input
@@ -54,7 +61,7 @@ const Contact = () => {
             value={formData.email}
             onChange={handleChange}
             placeholder="Your Email"
-            className="p-3 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400"
+            className="p-4 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400 transition"
             required
           />
           <textarea
@@ -62,8 +69,8 @@ const Contact = () => {
             value={formData.message}
             onChange={handleChange}
             placeholder="Your Message"
-            rows="5"
-            className="p-3 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400"
+            rows="6"
+            className="p-4 rounded-lg border border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400 transition resize-none"
             required
           ></textarea>
           <button
@@ -74,9 +81,9 @@ const Contact = () => {
           </button>
         </form>
 
-        <div className="mt-8 text-center text-green-800">
-          <p>Email: support@krishimitra.com</p>
-          <p>Phone: +91 98765 43210</p>
+        <div className="mt-10 text-center text-green-800 space-y-2">
+          <p>Email: <a href="mailto:support@krishimitra.com" className="underline hover:text-green-900 transition">support@krishimitra.com</a></p>
+          <p>Phone: <a href="tel:+919876543210" className="underline hover:text-green-900 transition">+91 98765 43210</a></p>
         </div>
       </div>
     </section>
@@ -84,4 +91,3 @@ const Contact = () => {
 };
 
 export default Contact;
-  

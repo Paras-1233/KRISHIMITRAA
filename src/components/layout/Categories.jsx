@@ -1,53 +1,44 @@
 import React from "react";
-import tractorImg from "../../assets/images/tractor.jpg"; // ✅ Import image
 
+// Map categories to the featured images
 const categories = [
-  {
-    id: 1,
-    name: "Tractors",
-    image: tractorImg,
-  },
-  {
-    id: 2,
-    name: "Seeds",
-    image:tractorImg  // smaller placeholder
-  },
-  {
-    id: 3,
-    name: "Tools",
-    image: tractorImg
-  },
-  {
-    id: 4,
-    name: "Fertilizers",
-    image: tractorImg
-  },
+  { id: 1, name: "Fruits & Vegetables", image: "/images/apple.jpg" },
+  { id: 2, name: "Grains & Cereals", image: "/images/wheat.jpg" },
+  { id: 3, name: "Dairy Products", image: "/images/milk.jpg" },
+  { id: 4, name: "Seeds & Fertilizers", image: "/images/seeds.jpg" },
+  { id: 5, name: "Tools & Equipment", image: "/images/tractor.jpg" },
 ];
 
-const Categories = () => {
+const Categories = ({ selectedCategory, onCategoryClick }) => {
   return (
-    <section className="py-8 px-4 bg-white">
+    <section className="py-10 px-4 bg-gray-50">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-2xl font-bold text-green-700 mb-6 text-center">
+        <h2 className="text-2xl md:text-3xl font-bold text-green-700 mb-8 text-center">
           🛍️ Shop by Category
         </h2>
 
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-          {categories.map((category) => (
-            <div
-              key={category.id}
-              className="bg-gray-50 rounded-md p-6 flex flex-col items-center justify-center cursor-pointer hover:bg-green-50 transition"
-            >
-              <img
-                src={category.image}
-                alt={category.name}
-                className="w-16 h-16 object-cover rounded-full mb-3"
-              />
-              <h3 className="text-sm font-medium text-gray-700">
-                {category.name}
-              </h3>
-            </div>
-          ))}
+        <div className="grid grid-cols-2 sm:grid-cols-5 gap-6">
+          {categories.map((category) => {
+            const isActive = selectedCategory === category.name;
+            return (
+              <div
+                key={category.id}
+                onClick={() => onCategoryClick(category.name)}
+                className={`bg-white rounded-lg p-4 flex flex-col items-center justify-center cursor-pointer transition
+                  ${isActive ? "bg-green-100 shadow-lg" : "hover:bg-green-50 hover:shadow-md"}`}
+              >
+                <img
+                  src={category.image}
+                  alt={category.name}
+                  loading="lazy"
+                  className="w-20 h-20 object-cover rounded-full mb-3"
+                />
+                <h3 className="text-sm md:text-base font-medium text-gray-800 text-center">
+                  {category.name}
+                </h3>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
