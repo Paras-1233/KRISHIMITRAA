@@ -41,7 +41,7 @@ const Footer = () => {
         {/* Contact Info */}
         <div>
           <h3 className="text-lg font-semibold mb-3">Contact Us</h3>
-          <p className="text-sm">📍 Pune, Maharashtra, India</p>
+          <p className="text-sm">📍 Ratnagiri, Maharashtra, India</p>
           <p className="text-sm">📞 +91 98765 43210</p>
           <p className="text-sm">📧 support@krishimitra.com</p>
 

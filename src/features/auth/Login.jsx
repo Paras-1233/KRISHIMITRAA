@@ -28,6 +28,15 @@ const LoginPage = ({ onClose }) => {
       return;
     }
 
+    // Admin default credentials
+    if (username.toLowerCase() === 'admin' && password === 'admin') {
+      localStorage.setItem('loggedInAdmin', 'true');
+      alert('Login successful (Admin)!');
+      navigate('/admin-dashboard');
+      onClose();
+      return;
+    }
+
     const buyers = JSON.parse(localStorage.getItem('buyers')) || [];
     const sellers = JSON.parse(localStorage.getItem('sellers')) || [];
 
@@ -44,10 +53,11 @@ const LoginPage = ({ onClose }) => {
       alert('Login successful (Buyer)!');
       navigate('/buyer-dashboard'); // ✅ Navigate first
       onClose(); // ✅ Then close
-    } else if (seller) {
-      localStorage.setItem('loggedInSeller', JSON.stringify(seller));
-      alert('Login successful (Seller)!');
-      navigate('/seller-dashboard'); // ✅ Navigate first
+    } else if (admin) {
+      // Legacy seller login path retained for compatibility; now treated as Admin
+      localStorage.setItem('loggedInAdmin', 'true');
+      alert('Login successful (Admin)!');
+      navigate('/admin-dashboard'); // ✅ Navigate first
       onClose(); // ✅ Then close
     } else {
       setErrorMessage('Invalid username or password.');

@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import Header from "../components/layout/Header";
 import ReactPlayer from "react-player";
 import BuyerSignup from "../features/auth/signup/BuyerSignup";
-import SellerSignup from "../features/auth/signup/SellerSignup";
+
 import LoginPage from "../features/auth/Login";
 import FeaturedProducts from "../components/product/FeaturedProducts";
 import Categories from "../components/layout/Categories";
-import Footer from "../components/layout/Footer";
-import Contact from "../components/layout/Contact";
+
+// import Contact from "../components/layout/Contact";
 import BrowseProducts from "../components/product/BrowseProducts";
 
 const Home = () => {
@@ -20,7 +20,7 @@ const Home = () => {
   return (
     <div className="min-h-screen flex flex-col relative bg-gray-50">
       {/* Header */}
-      <Header onLoginClick={() => setSelectedForm("login")} />
+     
 
       {/* Hero Section */}
       <div className="flex flex-col md:flex-row flex-1 px-6 md:px-16 py-20 text-white relative bg-green-700">
@@ -132,8 +132,8 @@ const Home = () => {
         selectedCategory={selectedCategory}
         onCategoryClick={(cat) => setSelectedCategory(cat)}
       />
-      <Contact />
-      <Footer />
+      {/* <Contact /> */}
+   
     </div>
   );
 };
