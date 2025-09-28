@@ -4,10 +4,16 @@ import AddProduct from './AddProduct';
 import AdminProductList from './AdminProductList';
 import AdminProfile from './AdminProfile';
 import AdminAnalytics from './AdminAnalytics';
+import AdminUserManagement from './AdminUserManagement';
 
 import {
-  Boxes, LogOut, User, PlusSquare,
-  LayoutDashboard, ChevronLeft, ChevronRight
+  Boxes,
+  LogOut,
+  User,
+  PlusSquare,
+  LayoutDashboard,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
 
 const AdminDashboard = () => {
@@ -18,9 +24,10 @@ const AdminDashboard = () => {
     return JSON.parse(localStorage.getItem('adminProducts')) || [];
   });
 
+  // Check if admin is logged in
   useEffect(() => {
-    const isAdminLoggedIn = localStorage.getItem('loggedInAdmin') === 'true';
-    if (!isAdminLoggedIn) {
+    const admin = JSON.parse(localStorage.getItem('admin'));
+    if (!admin) {
       navigate('/');
     }
   }, [navigate]);
@@ -47,13 +54,14 @@ const AdminDashboard = () => {
   };
 
   const handleLogout = () => {
+    localStorage.removeItem('admin');
     localStorage.removeItem('loggedInAdmin');
-    localStorage.setItem('isLoggedIn', 'false');
     navigate('/');
   };
 
   return (
     <div className="flex min-h-screen bg-[#f7fdf7]">
+      {/* Sidebar */}
       <div
         className={`transition-all duration-300 ${sidebarOpen ? 'w-64' : 'w-12'} bg-white border-r border-gray-200 shadow-lg p-2`}
       >
@@ -108,6 +116,16 @@ const AdminDashboard = () => {
               Analytics
             </button>
 
+            {/* User Management Tab */}
+            <button
+              onClick={() => setActiveTab('users')}
+              className={`flex items-center gap-2 px-4 py-2 w-full text-left rounded-lg ${
+                activeTab === 'users' ? 'bg-green-100 text-green-700' : 'hover:bg-gray-100'
+              }`}
+            >
+              Users
+            </button>
+
             <button
               onClick={handleLogout}
               className="flex items-center gap-2 px-4 py-2 w-full text-left rounded-lg text-red-600 hover:bg-red-50"
@@ -119,6 +137,7 @@ const AdminDashboard = () => {
         )}
       </div>
 
+      {/* Main Content */}
       <div className="flex-1 p-6">
         {activeTab === 'analytics' && <AdminAnalytics />}
 
@@ -147,11 +166,10 @@ const AdminDashboard = () => {
 
         {activeTab === 'add' && <AddProduct onAdd={handleAddProduct} />}
         {activeTab === 'profile' && <AdminProfile />}
+        {activeTab === 'users' && <AdminUserManagement />}
       </div>
     </div>
   );
 };
 
 export default AdminDashboard;
-
-

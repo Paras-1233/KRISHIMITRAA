@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Header from "../components/layout/Header";
 import ReactPlayer from "react-player";
-import BuyerSignup from "../features/auth/signup/BuyerSignup";
+import BuyerSignup from "../features/auth/BuyerSignup";
 
 import LoginPage from "../features/auth/Login";
 import FeaturedProducts from "../components/product/FeaturedProducts";

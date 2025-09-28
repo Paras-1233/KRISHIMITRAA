@@ -1,6 +1,5 @@
-// src/App.jsx
 import React, { useState } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 // Import all necessary pages and components
 import Home from './pages/Home';
@@ -14,39 +13,41 @@ import NotFound from './pages/NotFound';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import Contact from './pages/Contact';
+import BuyerSignup from './features/auth/BuyerSignup';
 
 const App = () => {
-  // State for the login modal
   const [showLogin, setShowLogin] = useState(false);
+  const navigate = useNavigate();
 
   const openLogin = () => setShowLogin(true);
   const closeLogin = () => setShowLogin(false);
 
+  // Handle login redirection
+  const handleLoginRedirect = (path) => {
+    closeLogin();
+    navigate(path); // Navigate immediately after modal closes
+  };
+
   return (
     <>
-    <Header onLoginClick={openLogin} /> 
-  
-      <Routes>
-        {/* The Home route passes the function to open the login modal */}
-        <Route path="/" element={<Home openLogin={openLogin} />} />
+      <Header onLoginClick={openLogin} />
 
-        {/* Routes for existing dashboards */}
+      <Routes>
+        <Route path="/" element={<Home openLogin={openLogin} />} />
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/buyer-dashboard" element={<BuyerDashboard />} />
-
-        {/* Routes for the new product pages */}
         <Route path="/all-products" element={<ProductListPage />} />
         <Route path="/products" element={<ProductDetailPage />} />
         <Route path="/cart" element={<CartPage />} />
-            <Route path="/Contact" element={<Contact/>} />
-
-        {/* A catch-all route for any undefined paths (404 Page) */}
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/signup" element={<BuyerSignup />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
 
-      {/* This renders the login page as a modal only when showLogin is true */}
-      {showLogin && <LoginPage onClose={closeLogin} />}
-      <Footer/>
+      {/* Login modal */}
+      {showLogin && <LoginPage onClose={handleLoginRedirect} />}
+
+      <Footer />
     </>
   );
 };

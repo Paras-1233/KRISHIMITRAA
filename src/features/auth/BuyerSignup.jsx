@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const BuyerSignup = ({ onClose, onLoginClick }) => {
   const [formData, setFormData] = useState({
@@ -12,49 +13,64 @@ const BuyerSignup = ({ onClose, onLoginClick }) => {
     agreed: false,
   });
 
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prev) => ({
+    setFormData(prev => ({
       ...prev,
-      [name]: type === 'checkbox' ? checked : value,
+      [name]: type === 'checkbox' ? checked : value
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!formData.agreed) return alert("Please accept the terms.");
-    if (formData.password !== formData.confirmPassword) return alert("Passwords do not match!");
-    if (!/^\d{10}$/.test(formData.phone)) return alert("Invalid mobile number.");
-    if (!/^\d{12}$/.test(formData.aadhar)) return alert("Invalid Aadhar number.");
-    if (!/\S+@\S+\.\S+/.test(formData.email)) return alert("Invalid email.");
+    // Frontend validations
+    if (!formData.agreed) return setError("Please accept the terms.");
+    if (formData.password !== formData.confirmPassword) return setError("Passwords do not match!");
+    if (!/^\d{10}$/.test(formData.phone)) return setError("Invalid mobile number.");
+    if (!/^\d{12}$/.test(formData.aadhar)) return setError("Invalid Aadhar number.");
+    if (!/\S+@\S+\.\S+/.test(formData.email)) return setError("Invalid email.");
 
-    const buyer = {
-      ...formData,
-      role: 'buyer',
-    };
+    try {
+      setLoading(true);
+      setError('');
 
-    // Store the buyer data in localStorage
-    localStorage.setItem('buyer', JSON.stringify(buyer));
+      const response = await axios.post('http://localhost:5000/api/buyers/signup', {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        aadhar: formData.aadhar,
+        password: formData.password,
+      });
 
-    alert("Buyer account created!");
+      // Save buyer info to localStorage
+      localStorage.setItem('loggedInBuyer', JSON.stringify(response.data.data));
 
-    // Close signup modal
-    onClose();
+      // Close modal
+      onClose();
 
-    // Navigate to the Buyer Dashboard
-    navigate('/buyer-dashboard');
+      // Redirect to Buyer Dashboard
+      navigate('/buyer-dashboard');
+
+    } catch (err) {
+      setError(err.response?.data?.message || 'Signup failed!');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
     <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center">
       <div className="bg-white w-[90%] max-w-[500px] rounded-lg shadow-lg p-6 relative">
-        <button onClick={onClose} className="absolute top-3 right-4 text-2xl text-gray-600 hover:text-red-600">
-          &times;
-        </button>
+        <button onClick={onClose} className="absolute top-3 right-4 text-2xl text-gray-600 hover:text-red-600">&times;</button>
         <h2 className="text-2xl font-semibold text-green-700 text-center mb-4">Buyer Registration</h2>
+
+        {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+
         <form onSubmit={handleSubmit} className="space-y-4">
           <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required className="w-full border px-3 py-2 rounded" />
           <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} required className="w-full border px-3 py-2 rounded" />
@@ -68,7 +84,9 @@ const BuyerSignup = ({ onClose, onLoginClick }) => {
             I agree to the <a href="#" className="ml-1 text-green-700 underline">Terms & Conditions</a>
           </label>
 
-          <button type="submit" className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">Create Account</button>
+          <button type="submit" disabled={loading} className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700">
+            {loading ? 'Creating Account...' : 'Create Account'}
+          </button>
 
           <p className="text-sm text-center mt-2">
             Already have an account?{' '}
