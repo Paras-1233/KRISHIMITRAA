@@ -15,6 +15,7 @@ const BuyerSignup = ({ onClose, onLoginClick }) => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [successMsg, setSuccessMsg] = useState(''); // ✅ Success message
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -38,6 +39,7 @@ const BuyerSignup = ({ onClose, onLoginClick }) => {
     try {
       setLoading(true);
       setError('');
+      setSuccessMsg('');
 
       const response = await axios.post('http://localhost:5000/api/buyers/signup', {
         name: formData.name,
@@ -50,11 +52,14 @@ const BuyerSignup = ({ onClose, onLoginClick }) => {
       // Save buyer info to localStorage
       localStorage.setItem('loggedInBuyer', JSON.stringify(response.data.data));
 
-      // Close modal
-      onClose();
+      // ✅ Show success message
+      setSuccessMsg('Account created successfully! Redirecting to dashboard...');
 
-      // Redirect to Buyer Dashboard
-      navigate('/buyer-dashboard');
+      // Close signup modal after 1.5 seconds for smooth UX
+      setTimeout(() => {
+        if (onClose) onClose();
+        navigate('/buyer-dashboard');
+      }, 1500);
 
     } catch (err) {
       setError(err.response?.data?.message || 'Signup failed!');
@@ -66,10 +71,18 @@ const BuyerSignup = ({ onClose, onLoginClick }) => {
   return (
     <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center">
       <div className="bg-white w-[90%] max-w-[500px] rounded-lg shadow-lg p-6 relative">
-        <button onClick={onClose} className="absolute top-3 right-4 text-2xl text-gray-600 hover:text-red-600">&times;</button>
-        <h2 className="text-2xl font-semibold text-green-700 text-center mb-4">Buyer Registration</h2>
+        <button
+          onClick={() => onClose && onClose()}
+          className="absolute top-3 right-4 text-2xl text-gray-600 hover:text-red-600"
+        >
+          &times;
+        </button>
+        <h2 className="text-2xl font-semibold text-green-700 text-center mb-4">
+          Buyer Registration
+        </h2>
 
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}
+        {successMsg && <p className="text-green-600 text-center mb-4">{successMsg}</p>}
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <input type="text" name="name" placeholder="Full Name" value={formData.name} onChange={handleChange} required className="w-full border px-3 py-2 rounded" />
@@ -90,7 +103,10 @@ const BuyerSignup = ({ onClose, onLoginClick }) => {
 
           <p className="text-sm text-center mt-2">
             Already have an account?{' '}
-            <span onClick={() => { onClose(); onLoginClick(); }} className="text-green-700 font-medium hover:underline cursor-pointer">
+            <span
+              onClick={() => { onClose(); onLoginClick(); }}
+              className="text-green-700 font-medium hover:underline cursor-pointer"
+            >
               Log in
             </span>
           </p>

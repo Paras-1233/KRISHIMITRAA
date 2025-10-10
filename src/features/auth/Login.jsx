@@ -12,47 +12,61 @@ const LoginPage = ({ onClose }) => {
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  const { username, password } = formData;
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const { username, password } = formData;
 
-  if (!username || !password) {
-    setErrorMessage('Both fields are required.');
-    return;
-  }
+    if (!username || !password) {
+      setErrorMessage("Both fields are required.");
+      return;
+    }
 
-  try {
-    const response = await axios.post('http://localhost:5000/api/auth/login', {
-      email: username,
-      password,
-    });
+    try {
+      const response = await axios.post("http://localhost:5000/api/auth/login", {
+        email: username,
+        password,
+      });
 
-    const { token, buyer, admin } = response.data;
+      const { token, buyer, admin } = response.data;
 
-  if (admin) {
-  localStorage.setItem('token', token);
-  localStorage.setItem('admin', JSON.stringify(admin));
-  localStorage.setItem('loggedInAdmin', 'true'); // <-- add this line
-  onClose('/admin-dashboard'); 
-} else if (buyer) {
-  localStorage.setItem('token', token);
-  localStorage.setItem('loggedInBuyer', JSON.stringify(buyer));
-  onClose('/buyer-dashboard');
+      if (admin) {
+        localStorage.setItem("token", token);
+        localStorage.setItem("admin", JSON.stringify(admin));
+        localStorage.setItem("loggedInAdmin", "true");
+
+        // ✅ Close modal first
+        onClose();
+        // ✅ Navigate after short delay to avoid flash
+        setTimeout(() => navigate("/admin-dashboard"), 100);
+
+      } else if (buyer) {
+  // Ensure _id exists
+  const buyerWithId = { ...buyer, _id: buyer.id || buyer._id };
+
+  localStorage.setItem("token", token);
+  localStorage.setItem("loggedInBuyer", JSON.stringify(buyerWithId));
+
+  onClose();
+  setTimeout(() => navigate("/buyer-dashboard"), 100);
 }
 
-
-  } catch (err) {
-    setErrorMessage(err.response?.data?.message || 'Login failed!');
-  }
-};
-
-
+    } catch (err) {
+      setErrorMessage(err.response?.data?.message || "Login failed!");
+    }
+  };
 
   return (
     <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex items-center justify-center">
       <div className="bg-white w-[90%] max-w-[500px] rounded-lg shadow-lg p-6 relative">
-        <button onClick={onClose} className="absolute top-3 right-4 text-2xl text-gray-600 hover:text-red-600">&times;</button>
-        <h2 className="text-2xl font-semibold text-green-700 text-center mb-4">Login to Your Account</h2>
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-4 text-2xl text-gray-600 hover:text-red-600"
+        >
+          &times;
+        </button>
+        <h2 className="text-2xl font-semibold text-green-700 text-center mb-4">
+          Login to Your Account
+        </h2>
 
         {errorMessage && <p className="text-red-500 text-center mb-4">{errorMessage}</p>}
 

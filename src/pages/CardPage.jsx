@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-
-
+import Header from '../components/layout/Header';
+import Footer from '../components/layout/Footer';
 import { ShoppingCart, Trash2, Plus, Minus, CreditCard, ArrowLeft } from 'lucide-react';
 
 const CartPage = () => {
@@ -64,7 +64,7 @@ const CartPage = () => {
   if (cart.length === 0) {
     return (
       <>
-      
+        <Header />
         <div className="min-h-screen bg-gray-50 py-12">
           <div className="max-w-4xl mx-auto px-6">
             <div className="bg-white rounded-xl shadow-lg p-12 text-center">
@@ -80,14 +80,14 @@ const CartPage = () => {
             </div>
           </div>
         </div>
-      
+        <Footer />
       </>
     );
   }
 
   return (
     <>
-      
+      <Header />
       <div className="min-h-screen bg-gray-50 py-8">
         <div className="max-w-6xl mx-auto px-6">
           {/* Header */}
@@ -211,7 +211,7 @@ const CartPage = () => {
           </div>
         </div>
       </div>
-   
+      <Footer />
     </>
   );
 };

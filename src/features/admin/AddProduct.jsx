@@ -1,96 +1,175 @@
 import React, { useState } from 'react';
 
 const AddProduct = ({ onAdd }) => {
-  const [formData, setFormData] = useState({
-    name: '',
-    price: '',
-    image: null,
-    category: 'Tools',
-    description: '',
-  });
+  const [name, setName] = useState('');
+  const [price, setPrice] = useState('');
+  const [priceType, setPriceType] = useState('unit'); // 'unit' or 'kg'
+  const [category, setCategory] = useState('');
+  const [description, setDescription] = useState('');
+  const [quantity, setQuantity] = useState(0);
+  const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const [error, setError] = useState('');
-  const [previewUrl, setPreviewUrl] = useState(null);
+  const categories = [
+    // Crops & Produce
+    'Cereals',
+    'Grains',
+    'Vegetables',
+    'Fruits',
+    'Pulses',
+    'Spices',
+    'Herbs',
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === 'image' && files.length > 0) {
-      setFormData({ ...formData, image: files[0] });
-      setPreviewUrl(URL.createObjectURL(files[0]));
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
-    setError('');
-  };
+    // Inputs
+    'Seeds',
+    'Fertilizers',
+    'Pesticides',
+    'Organic Inputs',
+    'Plant Growth Supplements',
 
-  const handleSubmit = (e) => {
+    // Tools & Machinery
+    'Hand Tools',
+    'Irrigation Tools',
+    'Tractors & Machinery',
+    'Harvesting Equipment',
+    'Sprayers & Pumps',
+
+    // Livestock & Related
+    'Animal Feed',
+    'Livestock Care',
+
+    // Others
+    'Agri Technology',
+    'Soil & Water Testing Kits',
+  ];
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const { name, price, image } = formData;
-    if (!name || !price || !image) {
-      setError('Name, price, and image are required.');
-      return;
-    }
+    if (!name || !price || !category || !priceType) return;
 
-    const newProduct = {
-      id: Date.now(),
-      ...formData,
-      price: parseFloat(formData.price),
-      image: URL.createObjectURL(formData.image),
-    };
+    setLoading(true);
+    await onAdd({ name, price, priceType, category, description, quantity, image });
+    setLoading(false);
 
-    onAdd(newProduct);
-
-    setFormData({ name: '', price: '', image: null, category: 'Tools', description: '' });
-    setPreviewUrl(null);
+    // Clear form
+    setName('');
+    setPrice('');
+    setPriceType('unit');
+    setCategory('');
+    setDescription('');
+    setQuantity(0);
+    setImage(null);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="bg-white p-6 rounded-2xl shadow-md mb-8 border border-gray-100">
-      <h2 className="text-2xl font-semibold mb-4 text-green-700 border-b pb-2">Add a New Product</h2>
+    <div className="bg-gradient-to-r from-green-50 to-green-100 shadow-2xl rounded-3xl p-8 max-w-3xl mx-auto mt-6">
+      <h2 className="text-3xl font-bold text-green-700 mb-6 text-center">Add New Product</h2>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* Product Name */}
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">Product Name</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter product name"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+              required
+            />
+          </div>
+
+          {/* Price */}
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">Price (₹)</label>
+            <input
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder="Enter price"
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+              required
+            />
+          </div>
+
+          {/* Price Type */}
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">Price Type</label>
+            <select
+              value={priceType}
+              onChange={(e) => setPriceType(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+            >
+              <option value="unit">Per Unit</option>
+              <option value="kg">Per Kg</option>
+            </select>
+          </div>
+
+          {/* Quantity */}
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">Quantity</label>
+            <input
+              type="number"
+              value={quantity}
+              onChange={(e) => setQuantity(Number(e.target.value))}
+              placeholder={priceType === 'kg' ? 'Enter quantity in kg' : 'Enter quantity in units'}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+              min={0}
+              required
+            />
+          </div>
+
+          {/* Category */}
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">Category</label>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+            >
+              <option value="" disabled>Select Category</option>
+              {categories.map((cat, index) => (
+                <option key={index} value={cat}>{cat}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Image */}
+          <div>
+            <label className="block text-gray-700 font-medium mb-1">Image</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setImage(e.target.files[0])}
+              className="w-full"
+            />
+          </div>
+        </div>
+
+        {/* Description */}
         <div>
-          <label className="block font-medium text-sm text-gray-700 mb-1">Product Name</label>
-          <input type="text" name="name" placeholder="e.g., Tractor Tool Kit" className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" value={formData.name} onChange={handleChange} />
+          <label className="block text-gray-700 font-medium mb-1">Description</label>
+          <textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Enter product description"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition resize-none"
+            rows={4}
+          />
         </div>
 
-        <div>
-          <label className="block font-medium text-sm text-gray-700 mb-1">Price (₹)</label>
-          <input type="number" name="price" placeholder="e.g., 2999" className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" value={formData.price} onChange={handleChange} />
-        </div>
-
-        <div>
-          <label className="block font-medium text-sm text-gray-700 mb-1">Upload Image</label>
-          <input type="file" name="image" accept="image/*" className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" onChange={handleChange} />
-          {previewUrl && <img src={previewUrl} alt="Preview" className="w-28 h-28 mt-3 object-cover border rounded" />}
-        </div>
-
-        <div>
-          <label className="block font-medium text-sm text-gray-700 mb-1">Category</label>
-          <select name="category" className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" value={formData.category} onChange={handleChange}>
-            <option value="Tools">Tools</option>
-            <option value="Seeds">Seeds</option>
-            <option value="Fertilizers">Fertilizers</option>
-            <option value="Machinery">Machinery</option>
-          </select>
-        </div>
-
-        <div className="md:col-span-2">
-          <label className="block font-medium text-sm text-gray-700 mb-1">Description</label>
-          <textarea name="description" rows="4" placeholder="Brief details about your product..." className="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" value={formData.description} onChange={handleChange} />
-        </div>
-      </div>
-
-      {error && <p className="text-red-500 mt-3">{error}</p>}
-
-      <div className="mt-6">
-        <button type="submit" className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-medium transition">+ Add Product</button>
-      </div>
-    </form>
+        {/* Submit Button */}
+        <button
+          type="submit"
+          disabled={loading}
+          className={`w-full py-3 px-6 rounded-xl font-bold text-white transition ${loading ? 'bg-green-400 cursor-not-allowed' : 'bg-green-600 hover:bg-green-700'}`}
+        >
+          {loading ? 'Adding...' : 'Add Product'}
+        </button>
+      </form>
+    </div>
   );
 };
 
 export default AddProduct;
-
-
-

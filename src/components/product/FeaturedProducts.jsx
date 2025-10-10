@@ -6,14 +6,14 @@ import { assets } from "../../assets/assets"; // make sure path is correct
 
 const featuredProducts = [
   { id: 1, name: "Apple", category: "Fruits & Vegetables", availability: "Available now", price: "₹120/kg", image: assets.apple },
-  { id: 2, name: "Carrot", category: "Fruits & Vegetables", availability: "Available now", price: "₹40/kg", image: assets.carrot },
+  { id: 2, name: "Carrot", category: "Fruits & Vegetables", availability: "Available now", price: "₹40/kg", image: assets.Carrot },
   { id: 3, name: "Tomato", category: "Fruits & Vegetables", availability: "Available now", price: "₹50/kg", image: assets.tomato },
   { id: 4, name: "Wheat", category: "Grains & Cereals", availability: "Available now", price: "₹35/kg", image: assets.wheat },
   { id: 5, name: "Rice", category: "Grains & Cereals", availability: "Available now", price: "₹40/kg", image: assets.rice },
   { id: 6, name: "Milk", category: "Dairy", availability: "Available now", price: "₹50/L", image: assets.milk },
   { id: 7, name: "Curd", category: "Dairy", availability: "Available now", price: "₹60/kg", image: assets.curd },
-  { id: 8, name: "Wheat Seeds", category: "Seeds & Fertilizers", availability: "Available now", price: "₹200/kg", image: assets.seeds },
-  { id: 9, name: "Organic Fertilizer", category: "Seeds & Fertilizers", availability: "Available now", price: "₹350/bag", image: assets.fertilizer },
+  { id: 8, name: "Wheat Seeds", category: "Seeds & Fertilizers", availability: "Available now", price: "₹200/kg", image: assets.seed },
+  { id: 9, name: "Nitrogen Fertilizer", category: "Seeds & Fertilizers", availability: "Available now", price: "₹350/bag", image: assets.nitrogenferti },
   { id: 10, name: "Tractor", category: "Tools & Equipment", availability: "Available now", price: "₹4,50,000", image: assets.tractor },
   { id: 11, name: "Hand Hoe", category: "Tools & Equipment", availability: "Available now", price: "₹150", image: assets.handhoe },
   { id: 12, name: "Sprayer", category: "Tools & Equipment", availability: "Available now", price: "₹1,200", image: assets.sprayer },

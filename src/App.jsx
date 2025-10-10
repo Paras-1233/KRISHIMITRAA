@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 
 // Import all necessary pages and components
-import Home from './pages/Home';
+import Home from './pages/home';
 import AdminDashboard from './features/Admin/AdminDashoard';
 import BuyerDashboard from './features/buyer/BuyerDashboard';
 import LoginPage from './features/auth/Login';
@@ -14,6 +14,8 @@ import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import Contact from './pages/Contact';
 import BuyerSignup from './features/auth/BuyerSignup';
+import GovSchemes from './pages/GovScheme';
+import About from './pages/About';
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);
@@ -42,6 +44,8 @@ const App = () => {
         <Route path="/contact" element={<Contact />} />
         <Route path="/signup" element={<BuyerSignup />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/gov-schemes" element={<GovSchemes />} />
+        <Route path='/about' element={<About/>} />
       </Routes>
 
       {/* Login modal */}

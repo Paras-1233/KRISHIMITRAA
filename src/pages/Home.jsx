@@ -9,11 +9,13 @@ import Categories from "../components/layout/Categories";
 
 // import Contact from "../components/layout/Contact";
 import BrowseProducts from "../components/product/BrowseProducts";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const [selectedForm, setSelectedForm] = useState(null); // buyer | seller | login
   const [searchQuery, setSearchQuery] = useState(""); // search term
   const [selectedCategory, setSelectedCategory] = useState(""); // selected category
+  const navigate =useNavigate()
 
   const handleClose = () => setSelectedForm(null); // Close any modal
 
@@ -28,7 +30,7 @@ const Home = () => {
         <div className="relative z-10 md:w-1/2 flex flex-col justify-between gap-6 p-6">
           <div className="flex-1 flex flex-col justify-center gap-6">
             <h2 className="text-4xl md:text-6xl font-extrabold leading-snug drop-shadow-lg">
-              🌾 Welcome to <span className="text-green-400">KrishiMitra</span>
+              🌾 Welcome to <span className="text-green-400">KRISHIMITRA</span>
             </h2>
             <p className="text-lg md:text-xl text-gray-200 max-w-lg leading-relaxed">
               Empowering Farmers, Connecting Markets. Access tools, government
@@ -61,7 +63,7 @@ const Home = () => {
             </p>
             <button
               className="bg-green-500 hover:bg-green-600 text-white px-6 py-2 rounded-lg transition"
-              onClick={() => alert("Feature coming soon")}
+              onClick={() => navigate("/gov-schemes")}
             >
               View Schemes
             </button>
@@ -79,12 +81,7 @@ const Home = () => {
               >
                 Become a Buyer
               </button>
-              <button
-                className="bg-green-300 text-green-900 font-medium px-6 py-2 rounded-lg hover:bg-green-200 transition"
-                onClick={() => setSelectedForm("seller")}
-              >
-                Become a Seller
-              </button>
+             
             </div>
           </div>
         </div>

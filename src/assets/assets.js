@@ -1,20 +1,24 @@
 
 
-import apple from './images/apple.jpg';
-import carrot from './images/carrot.jpg';
-import handhoe from './images/handhoe.jpg';
-import milk from './images/milk.jpg';
+import { Framer } from 'lucide-react';
+import apple from './images/apple.webp';
+import Carrot from './images/Carrot.webp'
+import handhoe from './images/handhoe.webp';
+import milk from './images/milk.webp';
 import rice from './images/rice.jpg';
-import sprayer from './images/sprayer.jpg';
-import tomato from './images/tomato.jpg';
-import tractor from './images/tractor.jpg';
-import wheat from './images/wheat.jpg';
+import sprayer from './images/sprayer.webp';
+import tomato from './images/tomato.webp';
+import tractor from './images/tractor.webp';
+import wheat from './images/wheat.webp';
+import seed from './images/seed.webp';
+import curd from './images/curd.webp';
+import nitrogenferti from './images/nitrogenferti.webp';
 
 
 
 export const assets = {
   apple,
-  carrot,
+  Carrot,
   handhoe,
   milk,
   rice,
@@ -22,6 +26,10 @@ export const assets = {
   tomato,
   tractor,
   wheat,
+  seed,
+  curd,
+  nitrogenferti
+  
   
   
 
