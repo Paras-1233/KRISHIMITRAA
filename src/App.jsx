@@ -2,20 +2,20 @@ import React, { useState } from 'react';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 
 // Import all necessary pages and components
-import Home from './pages/home';
-import AdminDashboard from './features/Admin/AdminDashoard';
-import BuyerDashboard from './features/buyer/BuyerDashboard';
-import LoginPage from './features/auth/Login';
-import ProductListPage from './pages/ProductListPage';
-import ProductDetailPage from './pages/ProductDetailPage';
-import CartPage from './pages/CardPage';
+import Home from './Pages/home';
+import AdminDashboard from './features/Admin/AdminDashboard';
+import BuyerDashboard from './features/Buyer/BuyerDashboard';
+import LoginPage from './features/Auth/Login';
+import ProductListPage from './Pages/ProductListPage';
+import ProductDetailPage from './Pages/ProductDetailPage';
+import CartPage from './Pages/CardPage';
 import NotFound from './pages/NotFound';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
-import Contact from './pages/Contact';
-import BuyerSignup from './features/auth/BuyerSignup';
-import GovSchemes from './pages/GovScheme';
-import About from './pages/About';
+import Contact from './Pages/Contact';
+import BuyerSignup from './features/Auth/BuyerSignup';
+import GovSchemes from './Pages/GovScheme';
+import About from './Pages/About';
 
 const App = () => {
   const [showLogin, setShowLogin] = useState(false);

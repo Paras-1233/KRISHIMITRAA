@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import Header from "../components/layout/Header";
 import ReactPlayer from "react-player";
-import BuyerSignup from "../features/auth/BuyerSignup";
+import BuyerSignup from "../features/Auth/BuyerSignup";
 
-import LoginPage from "../features/auth/Login";
+import LoginPage from "../features/Auth/Login";
 import FeaturedProducts from "../components/product/FeaturedProducts";
 import Categories from "../components/layout/Categories";
 
